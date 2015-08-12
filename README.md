@@ -10,7 +10,7 @@ Of course , you should install [nodejs](https://nodejs.org/download/) first.
 sudo npm install cheerio superagent -save-dev
 
 ##Try running
-Run node index.js @ your project root directory.e.g. */cheerio_spider/*
+Run node index.js @ your project root directory.e.g. */cheerio_spider/*  
 You'll see the result printed as below.
 
 [qlog] : 百度一下，你就知道
