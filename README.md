@@ -11,7 +11,7 @@ sudo npm install cheerio superagent -save-dev
 
 ##Try running
 Run node index.js @ your project root directory.e.g. */cheerio_spider/*  
-You'll see the result printed as below.
+You'll see the result printed as followed.
 
 [qlog] : 百度一下，你就知道
 
