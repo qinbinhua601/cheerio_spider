@@ -9,11 +9,13 @@ Of course , you should install [nodejs](https://nodejs.org/download/) first.
 
 sudo npm install cheerio superagent -save-dev
 
+
+After all the installation , you could just try run node index.js to check the result.
+If all things went well , you'll see the result printed as followed.
+
+[qlog] : 百度一下，你就知道
+
+
 ##Document for referencing
 + [superagent](http://visionmedia.github.io/superagent/)
 + [cheerio](https://npmjs.org/package/cheerio)
-
-After all the installation , you could just try run node index.js to check the result.
-If all things went well , you'll see the result printed like this below.
-
-[qlog] : 百度一下，你就知道
