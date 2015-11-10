@@ -1,0 +1,43 @@
+body {
+  background-color: #fff;
+  font-family: microsoft-yahei; }
+
+.box {
+  margin-bottom: 20px;
+  width: 300px; }
+  .box .titlebar {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding-left: 20px;
+    margin-bottom: 10px; }
+  .box .content {
+    padding-left: 20px;
+    border: 1px solid #ccc;
+    padding-bottom: 11px; }
+    .box .content span > b {
+      position: relative;
+      display: block;
+      height: 30px;
+      line-height: 30px;
+      border: 1px solid #ccc;
+      border-radius: 10px 0 0 10px;
+      margin-bottom: 5px;
+      padding-left: 10px; }
+      .box .content span > b > a {
+        font-size: 14px;
+        position: absolute;
+        right: 10px;
+        top: 2px;
+        padding: 0 5px;
+        border: 1px solid #ccc;
+        height: 24px;
+        line-height: 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        cursor: pointer;
+        color: #ccc; }
+        .box .content span > b > a:hover {
+          background-color: #04b00f;
+          color: #fff; }
+
+/*# sourceMappingURL=style.css.map */

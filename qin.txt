@@ -1,0 +1,16 @@
+new connection -> 
+	if roomId:
+		room = new Instance of the room
+		room.join()
+		room.receive({
+			'online' ->
+				send('start')
+			'start' ->
+				gameStart()
+			'end' ->
+				gameEnd()
+					upload the answer of the player
+		})
+	else:
+		create the roomId
+			<- new connection
