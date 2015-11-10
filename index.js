@@ -51,7 +51,7 @@ function onRequest (req,res) {
 		getData(function(result){
 		    console.log('Request received');
 		    res.writeHead(200,{"Content-Type":"text/html"});
-		    res.write('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Document</title><link rel="stylesheet" href="css/style.css" /></head><body>')
+		    res.write('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>直播吧比赛录像</title><link rel="stylesheet" href="css/style.css" /></head><body>')
 		    res.write(result);
 		    res.write('</body></html>')
 		    res.end()
