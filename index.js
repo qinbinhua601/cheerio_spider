@@ -11,11 +11,16 @@ function log(){
 	console.log.apply(console , args)
 }
 
-var cachedData;
+var cachedData = {
+	data: '',
+	expire: null
+}
 function getData(cb) {
-	if (cachedData) {
+	var now = Date.now()
+	log(now)
+	if (cachedData.data && ( now < cachedData.expire )) {
 		log('from cached')
-		cb && cb(cachedData)
+		cb && cb(cachedData.data)
 	} else {
 		log('no cached')
 		request
@@ -38,8 +43,12 @@ function getData(cb) {
 					var base = 'http://www.zhibo8.cc/'
 					result = result + '<div class="box">' + node.html().replace(/href="\//g,'href="' + base).replace(/\|/g,'') + '</div>'
 				};
-				cachedData = result
-				cb && cb(cachedData)
+
+
+				cachedData.data = result;
+				cachedData.expire = now + 60 * 1000 * 5;
+				log('expire: ' + cachedData.expire)
+				cb && cb(cachedData.data)
 			})
 	}
 }
