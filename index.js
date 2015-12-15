@@ -63,13 +63,20 @@ function onRequest (req,res) {
 			res.end()
 		})
 	}
+	else if(/\/js\/(\w+).js/.test(req.url)) {
+		res.writeHead(200,{"Content-Type":"application/x-javascript"})
+		rf.readFile(req.url.substr(1),'utf-8',function(err, data) {
+			res.write(data)
+			res.end()
+		})
+	}
 	else{
 		getData(function(result){
 		    console.log('Request received');
 		    res.writeHead(200,{"Content-Type":"text/html"});
-		    res.write('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>直播吧比赛录像</title><link rel="stylesheet" href="css/style.css" /></head><body>')
+		    res.write('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>直播吧比赛录像</title><link rel="stylesheet" href="css/style.css" /></head><body><canvas id="canvas" style="height:200px">当前浏览器不支持Canvas，请更换浏览器后再试</canvas><div class="container">')
 		    res.write(result);
-		    res.write('</body></html>')
+		    res.write('</div><script src="js/digit.js"></script><script src="js/countdown.js"></script></body></html>')
 		    res.end()
 		})
 	}
