@@ -4,3 +4,4 @@ node_modules
 imgs
 img
 getImg.js
+.eslintrc.json

@@ -1,11 +1,11 @@
 "use strict"
-var cheerio = require('cheerio'),
-	http 	= require("http"),
-	request = require('superagent'),
-	http = require('http'),
-	rf = require("fs")
+var cheerio = require('cheerio')
+var http 	= require("http")
+var request = require('superagent')
+var http = require('http')
+var rf = require("fs")
 
-function log(){
+function log () {
 	var args = Array.prototype.slice.call(arguments)
 	args.unshift('[qlog] : ')
 	console.log.apply(console , args)
@@ -15,7 +15,9 @@ var cachedData = {
 	data: '',
 	expire: null
 }
-function getData(cb) {
+
+function getData (cb) {
+
 	var now = Date.now()
 	log(now)
 	if (cachedData.data && ( now < cachedData.expire )) {
@@ -33,7 +35,7 @@ function getData(cb) {
 			.set('Cookie' , 'bdshare_firstime=1446263591987; CNZZDATA5642869=cnzz_eid%3D376350549-1446268239-http%253A%252F%252Fwww.zhibo8.cc%252F%26ntime%3D1446268239; BAIDU_DUP_lcr=https://www.baidu.com/link?url=JST7uYIeblh_GvnOVMZUyh8Dxlrf_s8_zwV7LlkWv3W&wd=&eqid=db3350b9000023b700000003564223b1; CNZZDATA709406=cnzz_eid%3D1278675408-1446262447-null%26ntime%3D1447172836; CNZZDATA5642867=cnzz_eid%3D2032041784-1446262524-http%253A%252F%252Fwww.zhibo8.cc%252F%26ntime%3D1447173981')
 			.set('Host' , 'www.zhibo8.cc')
 			.set('User-Agent' , 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Maxthon/4.4.6.2000 Chrome/30.0.1599.101 Safari/537.36')
-			.end(function(err, res){
+			.end(function (err, res) {
 				var data = res.text
 				var result = ''
 				var $ = cheerio.load(data)
@@ -55,15 +57,14 @@ function getData(cb) {
 
 function onRequest (req,res) {
 	console.log(req.url)
-	if(req.url === '/css/style.css'){
+	if (req.url === '/css/style.css') {
 		console.log('css request received');
 		res.writeHead(200,{"Content-Type":"text/css"})
 		rf.readFile("css/style.css",'utf-8',function(err, data) {
 			res.write(data)
 			res.end()
 		})
-	}
-	else if(/\/js\/(\w+).js/.test(req.url)) {
+	} else if ( /\/js\/(\w+).js/.test(req.url) ) {
 		res.writeHead(200,{"Content-Type":"application/x-javascript"})
 		rf.readFile(req.url.substr(1),'utf-8',function(err, data) {
 			res.write(data)
@@ -71,13 +72,13 @@ function onRequest (req,res) {
 		})
 	}
 	else{
-		getData(function(result){
-		    console.log('Request received');
-		    res.writeHead(200,{"Content-Type":"text/html"});
-		    res.write('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>直播吧比赛录像</title><link rel="stylesheet" href="css/style.css" /></head><body><canvas id="canvas" style="height:200px">当前浏览器不支持Canvas，请更换浏览器后再试</canvas><div class="container">')
-		    res.write(result);
-		    res.write('</div><script src="js/digit.js"></script><script src="js/countdown.js"></script></body></html>')
-		    res.end()
+		getData(function (result) {
+			console.log('Request received');
+			res.writeHead(200,{"Content-Type":"text/html"});
+			res.write('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>直播吧比赛录像</title><link rel="stylesheet" href="css/style.css" /></head><body><canvas id="canvas" style="height:200px">当前浏览器不支持Canvas，请更换浏览器后再试</canvas><div class="container">')
+			res.write(result);
+			res.write('</div><script src="js/digit.js"></script><script src="js/countdown.js"></script></body></html>')
+			res.end()
 		})
 	}
 }
