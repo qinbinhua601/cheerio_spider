@@ -2,3 +2,5 @@ node_modules
 .sass-cache
 .idea
 imgs
+img
+getImg.js
