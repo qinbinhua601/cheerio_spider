@@ -22,6 +22,10 @@ You'll see the result printed as followed.
 Open your browser and type in http://localhost:8888.
 After a while, you'll be able to see the lasttest 3 days' videos links from www.zhibo8.cc. :)
 
+## Preview
+
+![preview_image](https://github.com/qinbinhua601/cheerio_spider/blob/master/preview.png?raw=true)
+
 ## Document for referencing
 
 + [superagent](http://visionmedia.github.io/superagent/)
