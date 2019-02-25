@@ -1,15 +1,15 @@
-##Purpose
+## Purpose
 
 For simply grabbing data from a specific web site by *superagent*
 And enjoy the simplicity of the *cheerio*'s jquery selector syntac to select the specific nodes!
 
 Of course , you should install [nodejs](https://nodejs.org/download/) first.
 
-##Install cheerio & superagent
+## Install cheerio & superagent
 
 sudo npm install cheerio superagent -save-dev
 
-##Try running
+## Try running
 Run node index.js @ your project root directory.e.g. */cheerio_spider/*  
 You'll see the result printed as followed.
 
