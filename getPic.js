@@ -4,6 +4,8 @@ var cheerio = require('cheerio'),
     request = require('superagent'),
     http = require('http'),
     rf = require("fs"),
+    URL = require('url'),
+    path = require('path'),
     iconv = require('iconv-lite');
 
 function log(){
@@ -13,8 +15,12 @@ function log(){
 }
 
 function getUrls(url, cb) {
-    var path = 'imgs/' + url.split('/').pop().split('.')[0]
-    rf.mkdir(path,777,function(err){
+    var path = 'imgs/' + main_folder + url.split('/').pop().split('.')[0]
+    if (rf.existsSync(path)) {
+        console.log(`${path} existed`);
+        return
+    }
+    rf.mkdir(path, { recursive: true },function(err){
         var isError = true
         if (err) {
             if(err.code === 'EEXIST'){
@@ -55,7 +61,7 @@ function getData(url, path) {
             log(imgUrl)
             log(imgPath)
             // request(imgUrl).pipe(rf.createWriteStream(imgPath))
-            saveImg(imgUrl,imgPath,name)
+            saveImg(imgUrl,imgPath,name, url)
             // result += '<li><img src="'+ imgPath +'" alt="" /></li>'
         })
         // result += '</ul>'
@@ -63,6 +69,7 @@ function getData(url, path) {
 }
 
 function getOnePagePics(urls){
+    console.log(urls)
     for (var i = 0; i < urls.length; i++) {
         var url = urls[i]
         request(url, function (err, res, body) {  
@@ -72,6 +79,7 @@ function getOnePagePics(urls){
               return $(this).attr('class') !== 'page';
             }).find('> a').each(function(index, item){
                 var url = item.attribs.href
+                debugger
                 log(url)
                 getUrls(url, function(urls, path){
                     for (var i = 0; i < urls.length; i++) {
@@ -104,15 +112,25 @@ function startGetting(url) {
     })
 }
 
-function saveImg(url, dir,name){
-    http.get(url, function(res){
+function saveImg(url, dir, name, referer) {
+    var opt = URL.parse(url);
+    var options = {
+        hostname: opt.hostname,
+        host: opt.hostname,
+        path: opt.path,
+        headers: {
+            Referer: referer,
+        }
+    };
+    http.get(options, function(res){
         res.setEncoding('binary');
         var data='';
         res.on('data', function(chunk){
             data+=chunk;
         });
         res.on('end', function(){
-            rf.writeFile(dir + "/"+name, data, 'binary', function (err) {
+            rf.writeFile(path.resolve('.', dir, name), data, 'binary', function (err) {
+                console.log(path.resolve('.', dir, name))
                 if (err) throw err;
                 console.log('file saved '+name);
             });
@@ -122,15 +140,17 @@ function saveImg(url, dir,name){
     });
 }
 // entry point
+// var base = 'http://www.mm131.com/chemo/'
 // var base = 'http://www.mm131.com/mingxing/'
 // var base = 'http://www.mm131.com/qipao/'
-var base = 'http://www.mm131.com/chemo/'
-// var base = 'http://www.mm131.com/xiaohua/'
+// var base = 'http://www.mm131.com/xiaohua/'```
 // var base = 'http://www.mm131.com/qingchun/'
-// var base = 'http://www.mm131.com/xinggan/'
+var base = 'http://www.mm131.com/xinggan/'
 // var url = base + 'index.html'
+
+var main_folder = base.split('http://www.mm131.com/')[1]
 // startGetting(url)
-getOnePagePics(['http://www.mm131.com/mingxing/list_5_3.html'])
+
 // getOnePagePics([
 //     'http://www.mm131.com/chemo/index.html',
 //     'http://www.mm131.com/chemo/list_3_2.html',
@@ -138,27 +158,29 @@ getOnePagePics(['http://www.mm131.com/mingxing/list_5_3.html'])
 //     'http://www.mm131.com/chemo/list_3_4.html',
 //     'http://www.mm131.com/chemo/list_3_5.html',
 // ])
-// function onRequest (req,res) {
-//     console.log(req.url)
-//     if(req.url === '/css/style2.css'){
-//         console.log('css request received');
-//         res.writeHead(200,{"Content-Type":"text/css"})
-//         rf.readFile("css/style2.css",'utf-8',function(err, data) {
-//             res.write(data)
-//             res.end()
-//         })
-//     }
-//     else{
-//         getData(function(result){
-//             console.log('Request received');
-//             res.writeHead(200,{"Content-Type":"text/html"});
-//             res.write('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>图片</title><link rel="stylesheet" href="css/style2.css" /></head><body>')
-//             res.write(result);
-//             res.write('</body></html>')
-//             res.end()
-//         })
-//     }
-// }
 
-// http.createServer(onRequest).listen(8888);
-// log('server started on port : 8888')
+// getOnePagePics([
+//     'http://www.mm131.com/mingxing/index.html',
+//     'http://www.mm131.com/mingxing/list_5_2.html',
+//     'http://www.mm131.com/mingxing/list_5_3.html',
+//     'http://www.mm131.com/mingxing/list_5_4.html',
+//     'http://www.mm131.com/mingxing/list_5_5.html',
+//     'http://www.mm131.com/mingxing/list_5_6.html',
+//     'http://www.mm131.com/mingxing/list_5_7.html',
+//     'http://www.mm131.com/mingxing/list_5_8.html',
+// ])
+
+
+getOnePagePics([
+    // 'http://www.mm131.com/xinggan/',
+    // 'http://www.mm131.com/xinggan/list_6_2.html',
+    // 'http://www.mm131.com/xinggan/list_6_3.html',
+    // 'http://www.mm131.com/xinggan/list_6_4.html',
+    // 'http://www.mm131.com/xinggan/list_6_5.html',
+    // 'http://www.mm131.com/xinggan/list_6_6.html',
+    // 'http://www.mm131.com/xinggan/list_6_7.html',
+    // 'http://www.mm131.com/xinggan/list_6_8.html',
+    // 'http://www.mm131.com/xinggan/list_6_9.html',
+    // 'http://www.mm131.com/xinggan/list_6_10.html',
+    'http://www.mm131.com/xinggan/list_6_11.html',
+])
